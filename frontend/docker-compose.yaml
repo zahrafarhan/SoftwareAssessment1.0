@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+
+  backend:
+    build: 
+      context: C:\WarehouseSoftware/backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGODB_HOST=mongo
+    depends_on:
+      - mongo
+    restart:
+      on-failure:5
+
+  frontend:
+    build:
+      context: C:\WarehouseSoftware/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - backend
